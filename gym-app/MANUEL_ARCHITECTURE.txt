@@ -173,7 +173,7 @@ BONUS (OPTIONNEL) — FEUILLE DE ROUTE
 ============================================================
 CHECKLIST DE DÉMARRAGE RAPIDE
 ============================================================
-1. Créer la base MySQL gym_manager
+1. Créer la base MySQL gym_manager 
 2. Configurer .env
 3. php artisan key:generate
 4. php artisan migrate --seed
