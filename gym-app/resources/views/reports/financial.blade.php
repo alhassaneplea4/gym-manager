@@ -16,7 +16,7 @@
 
     <div class="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 p-5">
         <p class="text-sm text-gray-500 dark:text-gray-400">Revenu total {{ $year }}</p>
-        <p class="text-3xl font-semibold text-gray-900 dark:text-white mt-1">{{ number_format($totalRevenue, 2, ',', ' ') }} FCFA</p>
+        <p class="text-3xl font-semibold text-gray-900 dark:text-white mt-1">{{ number_format($totalRevenue, 2, ',', ' ') }} FG</p>
 
         <div class="mt-6 overflow-x-auto">
             <table class="min-w-full text-sm">
@@ -30,7 +30,7 @@
                     @forelse($monthly as $line)
                         <tr class="border-t border-gray-100 dark:border-gray-800 text-gray-800 dark:text-gray-200">
                             <td class="py-2">{{ $line->month_label }}</td>
-                            <td class="py-2">{{ number_format($line->revenue, 2, ',', ' ') }} FCFA</td>
+                            <td class="py-2">{{ number_format($line->revenue, 2, ',', ' ') }} FG</td>
                         </tr>
                     @empty
                         <tr>

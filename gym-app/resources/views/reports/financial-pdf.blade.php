@@ -16,7 +16,7 @@
 <body>
     <h1>Rapport Financier Annuel</h1>
     <div class="meta">GymManager • Année {{ $year }}</div>
-    <div class="total">Revenu total: {{ number_format($totalRevenue, 2, ',', ' ') }} FCFA</div>
+    <div class="total">Revenu total: {{ number_format($totalRevenue, 2, ',', ' ') }} FG</div>
 
     <table>
         <thead>
@@ -29,7 +29,7 @@
         @forelse($monthly as $line)
             <tr>
                 <td>{{ $line->month_label }}</td>
-                <td>{{ number_format($line->revenue, 2, ',', ' ') }} FCFA</td>
+                <td>{{ number_format($line->revenue, 2, ',', ' ') }} FG</td>
             </tr>
         @empty
             <tr>

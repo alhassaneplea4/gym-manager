@@ -15,7 +15,7 @@
             </div>
             <div class="rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-5">
                 <p class="text-sm text-gray-500 dark:text-gray-400">Revenus mensuels</p>
-                <p class="mt-2 text-3xl font-semibold text-gray-900 dark:text-white">{{ number_format($monthlyRevenue, 2, ',', ' ') }} FCFA</p>
+                <p class="mt-2 text-3xl font-semibold text-gray-900 dark:text-white">{{ number_format($monthlyRevenue, 2, ',', ' ') }} FG</p>
             </div>
             <div class="rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-5">
                 <p class="text-sm text-gray-500 dark:text-gray-400">Abonnements expirant bientôt</p>
