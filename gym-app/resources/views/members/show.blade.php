@@ -1,6 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Profil membre</h2>
+        <div class="flex items-center justify-between gap-3">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Profil membre</h2>
+            <a href="{{ route('members.badge', $member) }}" class="rounded-lg bg-gray-900 px-3 py-2 text-sm text-white dark:bg-white dark:text-gray-900">
+                Voir badge QR
+            </a>
+        </div>
     </x-slot>
 
     <div class="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 p-6 space-y-3 text-sm">

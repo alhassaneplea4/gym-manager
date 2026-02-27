@@ -8,6 +8,9 @@
             <x-input-label for="year" value="Année" />
             <x-text-input id="year" name="year" type="number" min="2020" max="2100" :value="$year" class="w-36" />
             <x-primary-button>Afficher</x-primary-button>
+            <a href="{{ route('reports.financial.pdf', ['year' => $year]) }}" class="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800">
+                Exporter PDF
+            </a>
         </form>
     </div>
 
