@@ -1,0 +1,185 @@
+GYM MANAGER - MANUEL TECHNIQUE (PHP 8 / Laravel 10 / MySQL / Tailwind)
+Date: 27 février 2026
+
+============================================================
+PHASE 1 — INSTALLATION ET CONFIGURATION
+============================================================
+1) Prérequis Windows (winget)
+- winget install --id PHP.PHP.8.3 --accept-source-agreements --accept-package-agreements --silent
+- winget install --id Oracle.MySQL --accept-source-agreements --accept-package-agreements --silent
+- Installer Composer (officiel): https://getcomposer.org/Composer-Setup.exe
+
+2) Vérification
+- php -v
+- composer --version
+- mysql --version
+
+3) Création projet Laravel 10
+- composer create-project laravel/laravel gym-app "^10.0"
+- cd gym-app
+
+4) Auth + Tailwind via Breeze
+- composer require laravel/breeze --dev
+- php artisan breeze:install blade --dark
+- npm install
+- npm run build
+
+5) Configuration DB (.env)
+- DB_CONNECTION=mysql
+- DB_HOST=127.0.0.1
+- DB_PORT=3306
+- DB_DATABASE=gym_manager
+- DB_USERNAME=root
+- DB_PASSWORD=...
+
+Bonnes pratiques:
+- Ne jamais commiter .env
+- APP_ENV=production + APP_DEBUG=false en prod
+- APP_KEY générée via php artisan key:generate
+
+============================================================
+PHASE 2 — ARCHITECTURE PROJET
+============================================================
+Architecture implémentée:
+- Contrôleurs RESTful:
+  - MemberController
+  - SubscriptionController
+  - PaymentController
+  - DashboardController
+  - FinancialReportController
+- Validation:
+  - Form Requests Store/Update pour Member, Subscription, Payment
+- Autorisation:
+  - Policies: MemberPolicy, SubscriptionPolicy, PaymentPolicy
+  - Middleware custom: EnsureRole
+- Services:
+  - SmsService (Twilio / Africa's Talking)
+- Commande planifiée:
+  - app:send-subscription-expiry-reminders
+
+Rôles:
+- admin
+- manager
+- employee
+
+============================================================
+PHASE 3 — STRUCTURE BASE DE DONNÉES
+============================================================
+Tables principales:
+- users (role indexé)
+- members
+- subscriptions
+- payments
+- attendance_logs
+- notifications
+
+Points SQL:
+- FK explicites + règles de suppression
+- Index sur colonnes de recherche (status, dates, member_id)
+- Champs monétaires en DECIMAL(10,2)
+- Référence paiement unique
+
+Migrations exécutables:
+- php artisan migrate
+- php artisan db:seed
+
+============================================================
+PHASE 4 — DASHBOARD PROFESSIONNEL
+============================================================
+Fonctionnalités:
+- Total membres
+- Membres actifs
+- Revenus mensuels
+- Abonnements expirant bientôt
+- Graphique revenus (Chart.js)
+
+UI:
+- Sidebar professionnelle
+- Responsive
+- Mode clair/sombre
+
+============================================================
+PHASE 5 — NOTIFICATIONS SMS
+============================================================
+Variables .env:
+- SMS_PROVIDER=twilio|africastalking
+- TWILIO_SID
+- TWILIO_AUTH_TOKEN
+- TWILIO_FROM
+- AT_USERNAME
+- AT_API_KEY
+- AT_FROM
+
+Automatisation:
+- Commande: php artisan app:send-subscription-expiry-reminders
+- Planification: dailyAt('08:00')
+
+Cron Laravel (serveur Linux):
+- * * * * * cd /var/www/gym-app && php artisan schedule:run >> /dev/null 2>&1
+
+Sécurité clés API:
+- Stocker uniquement en variables d'environnement
+- Rotation périodique
+- Permissions minimales côté fournisseur
+
+============================================================
+PHASE 6 — SÉCURITÉ
+============================================================
+Implémenté:
+- Auth Breeze
+- Protection CSRF native Laravel
+- Validation serveur stricte via Form Requests
+- Autorisations par Policies + middleware role
+- Hashage mot de passe natif Laravel (bcrypt/argon selon config)
+
+Recommandations production:
+- APP_ENV=production
+- APP_DEBUG=false
+- SESSION_SECURE_COOKIE=true
+- HTTPS obligatoire
+- Journalisation centralisée + alerting
+
+============================================================
+PHASE 7 — DESIGN PROFESSIONNEL
+============================================================
+Composants UI inclus:
+- Cartes statistiques dashboard
+- Tableaux dynamiques paginés
+- Boutons cohérents
+- Formulaires propres orientés UX
+- Palette sobre Tailwind (sans hardcode hors design system)
+
+============================================================
+PHASE 8 — BONNES PRATIQUES ET ÉVOLUTIVITÉ SAAS
+============================================================
+Clean code appliqué:
+- Responsabilités séparées (Controller / Request / Policy / Service)
+- Eloquent relationnel explicite
+- Routes groupées par middleware
+
+Préparation SaaS multi-salle (prochaine itération):
+- Ajouter table gyms
+- Ajouter gym_id sur users/members/subscriptions/payments
+- Scope global par gym
+- Isolation des données par tenant
+
+============================================================
+BONUS (OPTIONNEL) — FEUILLE DE ROUTE
+============================================================
+- QR check-in: attendance_logs.checkin_method=qr déjà prêt
+- Export PDF: endpoint report + package dompdf
+- Badge membre: générer identifiant + impression carte
+
+============================================================
+CHECKLIST DE DÉMARRAGE RAPIDE
+============================================================
+1. Créer la base MySQL gym_manager
+2. Configurer .env
+3. php artisan key:generate
+4. php artisan migrate --seed
+5. npm run dev
+6. php artisan serve
+7. Connexion:
+   - admin@gymmanager.local / Admin@12345
+   - manager@gymmanager.local / Manager@12345
+   - employee@gymmanager.local / Employee@12345

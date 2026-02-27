@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Payment;
+use Illuminate\Support\Carbon;
+use Illuminate\View\View;
+
+class FinancialReportController extends Controller
+{
+    public function index(): View
+    {
+        $year = (int) request('year', now()->year);
+
+        $monthly = Payment::query()
+            ->selectRaw('MONTH(paid_at) as month_number, SUM(amount) as revenue')
+            ->where('status', 'completed')
+            ->whereYear('paid_at', $year)
+            ->groupBy('month_number')
+            ->orderBy('month_number')
+            ->get()
+            ->map(function ($row) {
+                $row->month_label = Carbon::create()->month((int) $row->month_number)->translatedFormat('F');
+
+                return $row;
+            });
+
+        $totalRevenue = (float) $monthly->sum('revenue');
+
+        return view('reports.financial', compact('monthly', 'totalRevenue', 'year'));
+    }
+}
